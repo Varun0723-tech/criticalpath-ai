@@ -1,0 +1,833 @@
+:root {
+  color-scheme: light;
+  font-family: "Aptos", "Segoe UI", sans-serif;
+  --bg: #ebf4f6;
+  --bg-deep: #d8e9ef;
+  --surface: rgba(255, 255, 255, 0.92);
+  --surface-strong: #f8fbfc;
+  --text: #11243a;
+  --muted: #5f7286;
+  --line: rgba(30, 77, 101, 0.12);
+  --shadow: 0 26px 64px rgba(17, 36, 58, 0.12);
+  --critical: #c43a31;
+  --critical-soft: rgba(196, 58, 49, 0.14);
+  --urgent: #d98929;
+  --urgent-soft: rgba(217, 137, 41, 0.16);
+  --normal: #2d8358;
+  --normal-soft: rgba(45, 131, 88, 0.14);
+  --navy: #143753;
+  --teal: #2f7a8b;
+  --highlight: #eff7fa;
+  --info-soft: rgba(47, 122, 139, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(47, 122, 139, 0.18), transparent 36%),
+    radial-gradient(circle at top right, rgba(196, 58, 49, 0.08), transparent 24%),
+    linear-gradient(180deg, var(--bg) 0%, #f7fbfc 100%);
+  min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(20, 55, 83, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 55, 83, 0.04) 1px, transparent 1px);
+  background-size: 38px 38px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 88%);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(1260px, 92vw);
+  margin: 0 auto;
+  padding: 40px 0 72px;
+  position: relative;
+  z-index: 1;
+}
+
+.app-shell.has-critical-banner {
+  padding-top: 118px;
+}
+
+.hero,
+.dashboard-grid,
+.dual-grid,
+.snapshot-grid,
+.triage-form,
+.care-plan,
+.risk-meter,
+.json-panel,
+.results-column,
+.diagnosis-list,
+.timeline,
+.explainability-panel,
+.loading-workflow {
+  display: grid;
+  gap: 18px;
+}
+
+.hero {
+  grid-template-columns: 2fr 1fr;
+  gap: 22px;
+  margin-bottom: 24px;
+}
+
+.dashboard-grid {
+  grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.dual-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.panel,
+.section-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  animation: rise-in 0.55s ease both;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.panel {
+  padding: 28px;
+}
+
+.section-card {
+  padding: 26px;
+}
+
+.section-card:hover,
+.panel:hover,
+.snapshot-tile:hover,
+.diagnosis-card:hover,
+.care-callout:hover,
+.care-meta:hover,
+.timeline-item:hover,
+.workflow-step:hover,
+.explain-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 28px 72px rgba(17, 36, 58, 0.14);
+}
+
+.hero-copy h1 {
+  margin: 10px 0 12px;
+  font: 700 3rem/1.02 Georgia, "Times New Roman", serif;
+  letter-spacing: -0.04em;
+}
+
+.hero-copy p,
+.snapshot-tile p,
+.diagnosis-card p,
+.care-callout p,
+.timeline-content p,
+.placeholder-copy,
+.empty-state p,
+.timeline-content small,
+.explain-card p,
+.alert-banner p,
+.loading-copy p,
+.workflow-step p {
+  color: var(--muted);
+}
+
+.hero-metrics {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+  background:
+    linear-gradient(160deg, rgba(20, 55, 83, 0.97), rgba(47, 122, 139, 0.9)),
+    var(--navy);
+  color: white;
+}
+
+.hero-metrics strong {
+  display: block;
+  font-size: 1.15rem;
+  margin-top: 6px;
+}
+
+.eyebrow,
+.section-eyebrow,
+.metric-label {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.eyebrow,
+.section-eyebrow {
+  color: var(--teal);
+}
+
+.hero-metrics .metric-label {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font: 700 1.55rem/1.1 Georgia, "Times New Roman", serif;
+}
+
+.triage-form label {
+  display: grid;
+  gap: 10px;
+}
+
+.triage-form label span {
+  font-weight: 700;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid rgba(20, 55, 83, 0.15);
+  border-radius: 18px;
+  background: var(--surface-strong);
+  padding: 14px 16px;
+  color: var(--text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(47, 122, 139, 0.6);
+  box-shadow: 0 0 0 4px rgba(47, 122, 139, 0.12);
+  transform: translateY(-1px);
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-actions,
+.care-meta,
+.risk-meter-header,
+.diagnosis-header,
+.timeline-header,
+.workflow-step-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: start;
+}
+
+.form-actions {
+  flex-wrap: wrap;
+}
+
+.primary-button,
+.secondary-button,
+.ghost-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.primary-button {
+  background: linear-gradient(135deg, var(--navy), var(--teal));
+  color: white;
+  box-shadow: 0 16px 26px rgba(20, 55, 83, 0.22);
+}
+
+.secondary-button {
+  background: white;
+  color: var(--navy);
+  border: 1px solid rgba(20, 55, 83, 0.12);
+}
+
+.ghost-button {
+  width: fit-content;
+  background: rgba(47, 122, 139, 0.08);
+  color: var(--navy);
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.ghost-button:hover {
+  transform: translateY(-2px);
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.wide {
+  width: fit-content;
+}
+
+.status-banner,
+.alert-banner {
+  border-radius: 18px;
+  padding: 14px 16px;
+}
+
+.status-banner {
+  font-size: 0.94rem;
+}
+
+.status-banner.error {
+  background: rgba(196, 58, 49, 0.1);
+  color: var(--critical);
+}
+
+.status-banner.muted {
+  background: rgba(20, 55, 83, 0.06);
+  color: var(--muted);
+}
+
+.status-banner.info {
+  background: var(--info-soft);
+  color: var(--navy);
+}
+
+.alert-banner {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 14px;
+  border: 1px solid transparent;
+}
+
+.alert-banner strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.alert-banner-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.alert-banner.critical {
+  background: linear-gradient(135deg, rgba(196, 58, 49, 0.12), rgba(255, 236, 234, 0.95));
+  border-color: rgba(196, 58, 49, 0.18);
+  box-shadow: 0 0 0 1px rgba(196, 58, 49, 0.08), 0 18px 34px rgba(196, 58, 49, 0.14);
+}
+
+.alert-banner.warning {
+  background: linear-gradient(135deg, rgba(217, 137, 41, 0.14), rgba(255, 248, 235, 0.96));
+  border-color: rgba(217, 137, 41, 0.16);
+}
+
+.critical-ribbon {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1120px, calc(100vw - 28px));
+  z-index: 50;
+  background: linear-gradient(135deg, rgba(156, 20, 20, 0.94), rgba(222, 52, 45, 0.92));
+  color: white;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 34px rgba(196, 58, 49, 0.3);
+  animation: banner-fade 0.35s ease, banner-pulse 2.2s ease-in-out infinite;
+}
+
+.critical-ribbon .alert-banner-icon {
+  color: var(--critical);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.symptom-chip-row,
+.factor-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.symptom-chip,
+.risk-pill,
+.confidence-pill,
+.flag-chip,
+.timeline-status,
+.factor-chip {
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.symptom-chip {
+  background: rgba(47, 122, 139, 0.1);
+  color: var(--navy);
+  padding: 8px 12px;
+}
+
+.snapshot-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.snapshot-tile,
+.diagnosis-card,
+.care-callout,
+.care-meta,
+.timeline-item,
+.json-panel pre,
+.empty-state,
+.loading-workflow,
+.workflow-step,
+.explain-card,
+.red-flag-box {
+  border-radius: 22px;
+}
+
+.snapshot-tile {
+  border: 1px solid rgba(20, 55, 83, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), var(--highlight));
+  padding: 18px;
+}
+
+.snapshot-tile.emphasis {
+  position: relative;
+  overflow: hidden;
+}
+
+.snapshot-tile.emphasis.critical {
+  background: linear-gradient(145deg, rgba(196, 58, 49, 0.16), rgba(255, 243, 241, 0.98));
+  box-shadow: inset 0 0 0 1px rgba(196, 58, 49, 0.12), 0 0 36px rgba(196, 58, 49, 0.12);
+}
+
+.snapshot-tile.emphasis.urgent {
+  background: linear-gradient(145deg, rgba(217, 137, 41, 0.16), rgba(255, 247, 237, 0.98));
+  box-shadow: inset 0 0 0 1px rgba(217, 137, 41, 0.12), 0 0 34px rgba(217, 137, 41, 0.1);
+}
+
+.snapshot-tile.emphasis.normal {
+  background: linear-gradient(145deg, rgba(45, 131, 88, 0.14), rgba(241, 252, 246, 0.98));
+  box-shadow: inset 0 0 0 1px rgba(45, 131, 88, 0.1), 0 0 32px rgba(45, 131, 88, 0.1);
+}
+
+.severity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  width: fit-content;
+  margin: 10px 0 8px;
+}
+
+.severity-badge.critical {
+  background: linear-gradient(135deg, rgba(196, 58, 49, 0.18), rgba(255, 236, 234, 0.96));
+  color: var(--critical);
+  box-shadow: 0 0 22px rgba(196, 58, 49, 0.18);
+}
+
+.severity-badge.urgent {
+  background: linear-gradient(135deg, rgba(217, 137, 41, 0.18), rgba(255, 245, 229, 0.96));
+  color: #8b520d;
+  box-shadow: 0 0 20px rgba(217, 137, 41, 0.16);
+}
+
+.severity-badge.normal {
+  background: linear-gradient(135deg, rgba(45, 131, 88, 0.18), rgba(237, 250, 242, 0.96));
+  color: var(--normal);
+  box-shadow: 0 0 18px rgba(45, 131, 88, 0.14);
+}
+
+.severity-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.65);
+}
+
+.progress-track,
+.confidence-track {
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(20, 55, 83, 0.08);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--normal), var(--urgent), var(--critical));
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(47, 122, 139, 0.7), var(--navy));
+}
+
+.confidence-fill.high {
+  background: linear-gradient(90deg, rgba(196, 58, 49, 0.72), var(--critical));
+}
+
+.confidence-fill.medium {
+  background: linear-gradient(90deg, rgba(217, 137, 41, 0.74), #b76b15);
+}
+
+.confidence-fill.low {
+  background: linear-gradient(90deg, rgba(45, 131, 88, 0.72), var(--normal));
+}
+
+.risk-pill {
+  padding: 8px 12px;
+}
+
+.risk-pill.low {
+  background: var(--normal-soft);
+  color: var(--normal);
+}
+
+.risk-pill.medium {
+  background: var(--urgent-soft);
+  color: #8b520d;
+}
+
+.risk-pill.high {
+  background: var(--critical-soft);
+  color: var(--critical);
+}
+
+.red-flag-box {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 14px;
+  min-height: 72px;
+  align-items: center;
+  background: rgba(20, 55, 83, 0.04);
+  border: 1px dashed rgba(20, 55, 83, 0.12);
+}
+
+.red-flag-box.active {
+  background: rgba(196, 58, 49, 0.08);
+  border-color: rgba(196, 58, 49, 0.18);
+}
+
+.flag-chip {
+  background: rgba(196, 58, 49, 0.12);
+  color: var(--critical);
+  padding: 8px 12px;
+}
+
+.diagnosis-card,
+.care-callout,
+.care-meta,
+.workflow-step,
+.explain-card {
+  background: rgba(239, 247, 250, 0.72);
+  border: 1px solid rgba(20, 55, 83, 0.08);
+  padding: 16px;
+}
+
+.confidence-pill {
+  background: rgba(20, 55, 83, 0.08);
+  color: var(--navy);
+  padding: 8px 12px;
+}
+
+.confidence-pill.high {
+  background: rgba(196, 58, 49, 0.14);
+  color: var(--critical);
+}
+
+.confidence-pill.medium {
+  background: rgba(217, 137, 41, 0.16);
+  color: #8b520d;
+}
+
+.confidence-pill.low {
+  background: rgba(45, 131, 88, 0.14);
+  color: var(--normal);
+}
+
+.care-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px;
+  background: rgba(248, 251, 252, 0.78);
+  border: 1px solid rgba(20, 55, 83, 0.08);
+}
+
+.timeline-item.processing {
+  background: rgba(47, 122, 139, 0.08);
+}
+
+.timeline-item.fallback {
+  background: rgba(217, 137, 41, 0.1);
+}
+
+.timeline-marker,
+.workflow-step-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  background: linear-gradient(135deg, rgba(20, 55, 83, 0.96), rgba(47, 122, 139, 0.88));
+  color: white;
+  box-shadow: 0 0 0 6px rgba(47, 122, 139, 0.12);
+}
+
+.timeline-status-row {
+  margin: 6px 0 8px;
+}
+
+.timeline-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+}
+
+.timeline-status.processing {
+  background: rgba(47, 122, 139, 0.12);
+  color: var(--teal);
+}
+
+.timeline-status.completed {
+  background: rgba(45, 131, 88, 0.14);
+  color: var(--normal);
+}
+
+.timeline-status.fallback {
+  background: rgba(217, 137, 41, 0.16);
+  color: #8b520d;
+}
+
+.timeline-content small {
+  display: block;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.loader-orbit {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 4px solid rgba(47, 122, 139, 0.15);
+  border-top-color: var(--teal);
+  animation: spin 0.9s linear infinite;
+}
+
+.loading-copy strong {
+  font-size: 1.06rem;
+}
+
+.workflow-preview {
+  display: grid;
+  gap: 12px;
+}
+
+.workflow-step {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.workflow-step.processing {
+  background: linear-gradient(135deg, rgba(47, 122, 139, 0.1), rgba(255, 255, 255, 0.96));
+  box-shadow: inset 0 0 0 1px rgba(47, 122, 139, 0.12);
+}
+
+.workflow-step.completed {
+  background: linear-gradient(135deg, rgba(45, 131, 88, 0.08), rgba(255, 255, 255, 0.96));
+}
+
+.workflow-step.queued {
+  opacity: 0.78;
+}
+
+.workflow-step-header span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.factor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(20, 55, 83, 0.08);
+  color: var(--navy);
+  padding: 9px 12px;
+}
+
+.risk-factor-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.action-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.copy-feedback {
+  color: var(--teal);
+  font-weight: 700;
+}
+
+.json-panel pre {
+  margin: 0;
+  overflow: auto;
+  background: #10202f;
+  color: #d8f2ff;
+  padding: 18px;
+  max-height: 420px;
+  line-height: 1.55;
+  border: 1px solid rgba(16, 32, 47, 0.35);
+}
+
+.empty-state {
+  padding: 26px;
+  background: linear-gradient(180deg, rgba(47, 122, 139, 0.08), rgba(20, 55, 83, 0.05));
+  border: 1px dashed rgba(20, 55, 83, 0.16);
+}
+
+.empty-state h3 {
+  margin-top: 0;
+  font: 700 1.4rem/1.1 Georgia, "Times New Roman", serif;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes banner-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 28px rgba(196, 58, 49, 0.26);
+  }
+
+  50% {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 44px rgba(196, 58, 49, 0.42);
+  }
+}
+
+@keyframes banner-fade {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (max-width: 1080px) {
+  .hero,
+  .dashboard-grid,
+  .dual-grid,
+  .snapshot-grid,
+  .care-meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    width: min(94vw, 100%);
+    padding: 24px 0 48px;
+  }
+
+  .panel,
+  .section-card {
+    padding: 22px;
+    border-radius: 24px;
+  }
+
+  .hero-copy h1 {
+    font-size: 2.4rem;
+  }
+
+  .form-actions,
+  .risk-meter-header,
+  .diagnosis-header,
+  .timeline-header,
+  .workflow-step-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .ghost-button,
+  .wide {
+    width: 100%;
+  }
+
+  .critical-ribbon {
+    top: 8px;
+    width: calc(100vw - 16px);
+  }
+
+  .action-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
