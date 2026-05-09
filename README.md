@@ -63,6 +63,27 @@ This repo is set up to deploy as a single public website:
 
 Render will build the Dockerfile and expose the app on a public `onrender.com` URL.
 
+### Deploy on Vercel
+
+This repo now includes:
+
+- `index.py` as the Vercel FastAPI entrypoint
+- `main.py` as a compatibility wrapper
+- `vercel.json` for the Vercel build step
+- `build.py` to build the React frontend and copy it into `public/`
+
+Vercel deployment flow:
+
+1. Import the GitHub repo into Vercel
+2. Keep the project root at the repository root
+3. Add environment variables:
+   - `OPENAI_API_KEY`
+   - `OPENAI_MODEL=gpt-4o-mini`
+   - `ENABLE_LLM=true`
+4. Deploy
+
+If the previous deployment failed during the build step, it was likely because the repo did not include a Vercel-recognized FastAPI entrypoint at the root, or because the frontend build output was not being prepared for deployment.
+
 ## Push to GitHub
 
 Create a new empty GitHub repository first, then run:
